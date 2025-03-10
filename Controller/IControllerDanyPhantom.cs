@@ -10,5 +10,6 @@ namespace DP.Controller
     interface IControllerDanyPhantom
     {
         List<PhantomModel> ObtenerPersonajes();
+        bool Insertar(PhantomModel personaje);
     }
 }

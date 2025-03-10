@@ -14,6 +14,36 @@ namespace DP.Controller
     {
         private Conexion conexion = new Conexion();
 
+        public bool Insertar(PhantomModel personaje)
+        {
+            using (SqlConnection conn = conexion.GetConnection())
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("sp_InsertarPersonaje", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Parámetros del procedimiento almacenado
+                    cmd.Parameters.AddWithValue("@Nombre", personaje.Nombre);
+                    cmd.Parameters.AddWithValue("@Apodo", personaje.Apodo);
+                    cmd.Parameters.AddWithValue("@Raza", personaje.Raza);
+                    cmd.Parameters.AddWithValue("@Dueño", personaje.Dueño);
+                    cmd.Parameters.AddWithValue("@Personalidad", personaje.Personalidad);
+                    cmd.Parameters.AddWithValue("@PrimeraAparicion", personaje.PrimeraAparicion ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ImagenURL", personaje.ImagenURL);
+
+                    int filasAfectadas = cmd.ExecuteNonQuery();
+                    return filasAfectadas > 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al agregar personaje: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
         public List<PhantomModel> ObtenerPersonajes()
         {
             List<PhantomModel> personajes = new List<PhantomModel>();

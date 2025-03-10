@@ -115,13 +115,39 @@ namespace DP
 
             if (!string.IsNullOrEmpty(imageUrl))
             {
+                cmbPersonajes.DataSource = personajes;   // Asignar la nueva lista al ComboBox
                 await CargarImagen(imageUrl);
+               
             }
             else
             {
                 picturePersonaje.Image = null;
             }
 
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            PhantomModel nuevoPersonaje = new PhantomModel
+            {
+                Nombre = txtNombre.Text,
+                Apodo = txtApodo.Text,
+                Raza = txtRaza.Text,
+                Dueño = txtDueño.Text,
+                Personalidad = txtPersonalidad.Text,
+                PrimeraAparicion = dtpPrimeraAparicion.Value,
+                ImagenURL = txtImagenURL.Text
+            };
+
+            if (controller.Insertar(nuevoPersonaje))
+            {
+                MessageBox.Show("Personaje agregado correctamente.");
+                CargarPersonajes(); // Recargar la lista en el DataGridView
+            }
+            else
+            {
+                MessageBox.Show("Error al agregar el personaje.");
+            }
         }
     }
 }
